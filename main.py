@@ -156,8 +156,6 @@ def s_boxCal(text,sbox):
     col = text[1:5]
     col = bintoDec(col)
     row = bintoDec(row)
-    print('row =', row)
-    print('col =', col)
     return DectoBin(sbox[row][col])
 
 
@@ -176,24 +174,36 @@ def encryt(plaintext,key):
     bintext = stringtoBin(plaintext)
     bintext = permute(bintext, initial_perm)
     keys = genkey(key)
-    print(keys)
     for i in range(16):
         bintext_left = bintext[:32]
         bintext_right = bintext[32:]
         key_right = rountFunc(bintext_right,keys[i])
         bintext = bintext_right + xor(key_right,bintext_left)
-        print('round', i+1)
-        print(bintext)
     bintext = bintext[32:] + bintext[:32]
     bintext = permute(bintext,final_perm)
     return bintext
 
+def dycript(encriptedtext,key) :
+    bintext = permute(encriptedtext, initial_perm)
+    keys = genkey(key)
+    for i in range(16):
+        bintext_left = bintext[:32]
+        bintext_right = bintext[32:]
+        key_right = rountFunc(bintext_right,keys[15-i])
+        bintext = bintext_right + xor(key_right,bintext_left)
+    bintext = bintext[32:] + bintext[:32]
+    bintext = permute(bintext,final_perm)
+    return bintext
 
 def main():
     key = stringtoBin("12345678")
     plaintext = "lmaoxdxd"
     a = encryt(plaintext,key)
     print(format(int(a, 2),'016x'))
+    b = dycript(a,key)
+    c = format(int(b, 2),'016x')
+    print(c)
+
 
 if __name__ == '__main__':
     main()
