@@ -194,12 +194,27 @@ def encryt(plaintext,key):
     bintext = permute(bintext,final_perm)
     return bintext
 
+#ham decrypt des
+def dycript(encriptedtext,key) :
+    bintext = permute(encriptedtext, initial_perm)
+    keys = genkey(key)
+    for i in range(16):
+        bintext_left = bintext[:32]
+        bintext_right = bintext[32:]
+        key_right = rountFunc(bintext_right,keys[15-i])
+        bintext = bintext_right + xor(key_right,bintext_left)
+    bintext = bintext[32:] + bintext[:32]
+    bintext = permute(bintext,final_perm)
+    return bintext
 
 def main():
     key = stringtoBin("12345678")
     plaintext = "lmaoxdxd"
     a = encryt(plaintext,key)
     print(format(int(a, 2),'016x'))
+    b = dycript(a,key)
+    c = format(int(b, 2),'016x')
+    print(c)
 
 if __name__ == '__main__':
     main()
