@@ -1,4 +1,4 @@
-
+# cac bien mac dinh dung trong thuat toan
 pc_1 = [57, 49, 41, 33, 25, 17, 9,
         1, 58, 50, 42, 34, 26, 18,
         10, 2, 59, 51, 43, 35, 27,
@@ -98,17 +98,20 @@ final_perm = [ 40, 8, 48, 16, 56, 24, 64, 32,
                34, 2, 42, 10, 50, 18, 58, 26,
                33, 1, 41, 9, 49, 17, 57, 25 ]
 
+# ham bien bin string thanh sop thap phan
 def  bintoDec(a):
     s = 0
     for i in range(len(a)):
         s = s + (2**(len(a)-i-1))*int(a[i])
     return s
 
+# ham bien sop thap phan thanh bin string
 def  DectoBin(a):
     s = format(a,"04b")
     return s
 
 
+# ham xor 2 bin string
 def xor(a,b):
     s = ""
     for i in range(len(a)):
@@ -118,10 +121,11 @@ def xor(a,b):
         s = s + "1"
     return s
 
-
+# string uft8 thanh string bin
 def stringtoBin(s):
     return "".join([format(ord(i),"08b") for i in s])
 
+#dich i bit cua bin string sang ben trai
 def shiftleft(s,i):
     temp = ""
     x = s
@@ -130,12 +134,14 @@ def shiftleft(s,i):
         x = temp
     return x
 
+# thay doi bin string theo ma tran co san
 def permute(string,table):
     s = ""
     for i in table:
         s = s + string[i-1]
     return s
 
+# to 16 cap key tu 1 key ban dau
 def genkey(key):
     key_1 = permute(key,pc_1)
     key_2 = []
@@ -150,7 +156,7 @@ def genkey(key):
     return key_2
 
 
-
+# lay gia tri tu sbox
 def s_boxCal(text,sbox):
     row = text[0] + text[5]
     col = text[1:5]
@@ -160,7 +166,7 @@ def s_boxCal(text,sbox):
     print('col =', col)
     return DectoBin(sbox[row][col])
 
-
+# ham bien doi nua ben phai cua text can ma hoa
 def rountFunc(text_right,key):
     exten = permute(text_right,exp_d)
     temp = xor(exten,key)
@@ -171,7 +177,7 @@ def rountFunc(text_right,key):
     k = permute(k,per)
     return k
 
-
+# ham encrypt text theo key
 def encryt(plaintext,key):
     bintext = stringtoBin(plaintext)
     bintext = permute(bintext, initial_perm)
